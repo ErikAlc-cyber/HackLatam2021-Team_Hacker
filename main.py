@@ -26,6 +26,7 @@ GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 YELLOW = (255, 255, 12)
 WHITE = (255,255,255)
+ORANGE = (255,128,0)
 
 #font = pygame.font.Font('agencyfb', 24)
 #mensaje = fuente.render(text, 1, (255, 255, 255))
@@ -34,7 +35,8 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.font.init()
 
 #tipos de letra
-default_font = pygame.font.Font(None, 28)
+default_font = pygame.font.SysFont(None, 28)
+marcador_font = pygame.font.SysFont(None, 40)
 consolas = pygame.font.match_font('consolas')
 times = pygame.font.match_font('times')
 arial = pygame.font.match_font('arial')
@@ -166,7 +168,7 @@ def start_the_game(modo):
     bola = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     posbola = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     click_rect  = pygame.Rect( SCREEN_WIDTH//6, SCREEN_HEIGHT//6, SCREEN_WIDTH//6, SCREEN_HEIGHT//6 )
-    puntaje = [0]
+    puntaje = 0
 
     #carga componentes esteticos
     fondo = load_image("Imagenes/fondo.jpg", IMG_DIR, alpha=False)
@@ -239,10 +241,10 @@ def start_the_game(modo):
                     print(posbola)
                     if click_rect.collidepoint( posbola[i] ):
                         puntaje-=-1
+                        pygame.mixer.Sound.play(sonido_fondo)
                     print("Puntos: ",puntaje)
 
                 handled = pygame.mouse.get_pressed()[0]
-                pygame.mixer.Sound.play(sonido_fondo)
 
             #Escuchar las teclas que se precionan
             if event.type == KEYDOWN:
@@ -253,7 +255,8 @@ def start_the_game(modo):
         screen.blit(fondo, (0, 0))
         for i in range(0,10):
             screen.blit(bola[i].image, bola[i].rect)
-            #screen.blit(jugador1.image, jugador1.rect)
+        marcador = marcador_font.render(str(puntaje),True,ORANGE)
+        screen.blit(marcador,(200,20,50,50))
         pygame.display.flip()
 pass
 
