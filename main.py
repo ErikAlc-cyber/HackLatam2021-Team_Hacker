@@ -15,6 +15,7 @@ SONIDO_DIR = ""
 preg = 0
 ans = 0
 
+#diccionarios e imagenes
 Abecedario = ['A','B','C','D','E','F','G','H','I','J','K','L','M','Ñ','O','P','Q','R','S','T','V','W','X','Y','Z']
 Diccionario = ['arena.png','burro.png','camello.png','dinosaurio.png','elefante.png','foca.png','grillo.png','hipopotamo.png','iguana.png','jirafa.png','koala.png','leon.png','mariposa.png','ñoño.png',
                 'oso.png','perro.png','queso.png','raton.png','salsa.png','tiburon.png','volar.png','walmart.png','xmen.png','yoyo.png','zorro.png']
@@ -28,9 +29,7 @@ YELLOW = (255, 255, 12)
 WHITE = (255,255,255)
 ORANGE = (255,128,0)
 
-#font = pygame.font.Font('agencyfb', 24)
-#mensaje = fuente.render(text, 1, (255, 255, 255))
-
+#Define la ventana
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.font.init()
 
@@ -101,6 +100,7 @@ def load_sound(nombre, dir_sonido):
         sonido = None
     return sonido
 
+#Modo de juego matematicas
 def math():
     i = True
     operaciones = random.randrange(4)
@@ -153,6 +153,7 @@ def math():
     print(ans)
     return ans, "ball.png"
 
+#modo de juego español
 def esp():
     x = random.randint (0,24)
     print(x)
@@ -177,7 +178,7 @@ def start_the_game(modo):
     if modo == 2:
         let,img = math()
         for i in range(0,24):
-            bola[i] = Pelota(sonido_punto,("Imagenes/"+"ball.png"))
+            bola[i] = Pelota(sonido_punto,("Imagenes/ball.png"))
     elif modo == 1:
         let,img = esp()
         for i in range(0,24):
