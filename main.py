@@ -32,7 +32,13 @@ WHITE = (255,255,255)
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.font.init()
+
+#tipos de letra
 default_font = pygame.font.Font(None, 28)
+consolas = pygame.font.match_font('consolas')
+times = pygame.font.match_font('times')
+arial = pygame.font.match_font('arial')
+courier = pygame.font.match_font('courier')
 
 #validar un dato flotante
 def es_flotante(variable):
@@ -73,6 +79,14 @@ def draw_text(text, font, surface, x, y, main_color, background_color=None):
     textrect.centerx = x
     textrect.centery = y
     surface.blit(textobj, textrect)
+
+#texto alternativo
+def muestra_texto(pantalla,fuente,texto,color, dimensiones, x, y):
+    tipo_letra = pygame.font.Font(fuente,dimensiones)
+    superficie = tipo_letra.render(str(texto),True, color)
+    rectangulo = superficie.get_rect()
+    rectangulo.center = (x, y)
+    pantalla.blit(superficie,rectangulo)
 
 #agrega sonidos
 def load_sound(nombre, dir_sonido):
@@ -144,11 +158,15 @@ def esp():
     ans=Diccionario[x]
     print(preg, ans)
     return preg,ans
+
 #Juego en si
 def start_the_game(modo):
 
     # cargamos los objetos
-    bola = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];
+    bola = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    posbola = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    click_rect  = pygame.Rect( SCREEN_WIDTH//6, SCREEN_HEIGHT//6, SCREEN_WIDTH//6, SCREEN_HEIGHT//6 )
+    puntaje = [0]
 
     #carga componentes esteticos
     fondo = load_image("Imagenes/fondo.jpg", IMG_DIR, alpha=False)
@@ -166,15 +184,14 @@ def start_the_game(modo):
         print("error")
         sys.exit(0)
 
+    muestra_texto(screen,consolas,puntaje, RED, 40, 700, 50)
+
     #toda la musica de fondo
     pygame.mixer.music.load("Sonidos/musicafondo.mp3")
     pygame.mixer.music.set_volume(0.5)
     pygame.mixer.music.play(-1)
 
     sonido_fondo = pygame.mixer.Sound("Sonidos/rebote.mp3")
-
-    puntaje = 0
-
 
     #Variables
     running = True
@@ -213,12 +230,14 @@ def start_the_game(modo):
             if event.type == pygame.MOUSEBUTTONUP:
                 posx = pos_mouse[0]
                 posy = pos_mouse[1]
+                pos = posx, posy
 
                 print(posx, posy)
 
                 for i in range(0,10):
-                    print(bola[i].rect.centerx,bola[i].rect.centery)
-                    if (posx == bola[i].rect.centerx & posy == bola[i].rect.centery):
+                    posbola[i] = bola[i].rect.centerx,bola[i].rect.centery
+                    print(posbola)
+                    if click_rect.collidepoint( posbola[i] ):
                         puntaje-=-1
                     print("Puntos: ",puntaje)
 
@@ -250,6 +269,7 @@ class Pelota(pygame.sprite.Sprite):
         self.rect.centerx = random.randrange(SCREEN_WIDTH) / 2
         self.rect.centery = random.randrange(SCREEN_HEIGHT) / 2
         self.speed = [3, 3]
+        self.rect.inflate(250,250)
         self.sonido_punto = sonido_punto
         self.hitbox = (self.rect.centerx+50, self.rect.centery+50, 0, 0)
 
