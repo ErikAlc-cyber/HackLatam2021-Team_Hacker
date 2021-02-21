@@ -1,6 +1,6 @@
 from setuptools import setup
 
-setup(name="Prueba",  # Nombre
+setup(name="HackLearn",  # Nombre
     version="0.1",  # Versión de desarrollo
     description="Proyecto de HackLatam",  # Descripción del funcionamiento
     author="Team_Hack",  # Nombre del autor
